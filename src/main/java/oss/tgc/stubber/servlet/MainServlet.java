@@ -6,6 +6,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import oss.tgc.stubber.dao.StubDao;
+import oss.tgc.stubber.model.Constants;
 import oss.tgc.stubber.model.StubInstance;
 
 import javax.servlet.ServletConfig;
@@ -39,6 +40,18 @@ public class MainServlet extends HttpServlet {
 
              if (stubs != null && stubs.size() > 0) {
                  response.getWriter().print(stubs.get(0).getResponse());
+                 String responeHeaders = stubs.get(0).getResponseHeaders();
+                 if (responeHeaders!=null && responeHeaders.trim().length()>0){
+
+                     String[] responeHeadersList = responeHeaders.split(Constants.SEPERATOR);
+                     for (int i =0 ; i< responeHeadersList.length; i++){
+                         String[] header = responeHeadersList[i].split(":");
+                         response.setHeader(header[0],header[1]);
+                     }
+
+                 }
+
+
 
              }
              else

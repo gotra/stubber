@@ -14,7 +14,27 @@ angular.module('stubberApp.newview', ['ngRoute','ngResource'])
 
     .controller('NewStubCtrl', ['$resource','$scope',function($resource,$scope) {
 
-        var stubdao = $resource('/donotuse/api/stub/:id');
+        var Stub = $resource('/donotuse/api/stub/:id');
+
+        $scope.save = function(stubToBeSaved) {
+
+
+
+            var stub = new Stub();
+            stub.name = stubToBeSaved.name;
+            stub.description = stubToBeSaved.description;
+            stub.urlPath = stubToBeSaved.urlPath;
+            stub.httpMethod = stubToBeSaved.httpMethod;
+            if (stubToBeSaved.responseHeaders)
+                stub.responseHeaders = window.btoa(stubToBeSaved.responseHeaders);
+
+            if (stubToBeSaved.response)
+                stub.response = window.btoa(stubToBeSaved.response);
+
+            stub.$save();
+
+
+        }
 
 
 

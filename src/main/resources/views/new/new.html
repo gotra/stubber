@@ -1,6 +1,6 @@
 <div class="container">
 
-    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+    <form name="userForm"  novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
 
         <!-- NAME -->
         <div class="form-group">
@@ -11,13 +11,13 @@
         <!-- DESCRIPTION -->
         <div class="form-group">
             <label>Description</label>
-            <input type="text" name="description" class="form-control" ng-model="stub.description" ng-minlength="3" ng-maxlength="8">
+            <input type="text" name="description" class="form-control" ng-model="stub.description">
         </div>
 
         <!-- URL PATH -->
         <div class="form-group">
             <label>Url Path</label>
-            <input type="url" name="urlPath" class="form-control" ng-model="stub.urlPath">
+            <input type="text" name="urlPath" class="form-control" ng-model="stub.urlPath">
         </div>
 
         <!-- http method -->
@@ -42,7 +42,7 @@
 
 
         <!-- SUBMIT BUTTON -->
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" ng-click="save(stub)" class="btn btn-primary">Submit</button>
 
     </form>
 
