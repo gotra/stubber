@@ -1,48 +1,100 @@
 <div class="container">
 
-    <form name="userForm"  novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
-
-        <!-- NAME -->
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" name="name" class="form-control" ng-model="stub.name" required>
-        </div>
-
-        <!-- DESCRIPTION -->
-        <div class="form-group">
-            <label>Description</label>
-            <input type="text" name="description" class="form-control" ng-model="stub.description">
-        </div>
-
-        <!-- URL PATH -->
-        <div class="form-group">
-            <label>Url Path</label>
-            <input type="text" name="urlPath" class="form-control" ng-model="stub.urlPath">
-        </div>
-
-        <!-- http method -->
-        <div class="form-group">
-            <label>Http Method</label>
-            <input type="text" name="httpMethod" class="form-control" ng-model="stub.httpMethod">
-        </div>
+    <!--<form name="userForm"  novalidate> &lt;!&ndash; novalidate prevents HTML5 validation since we will be validating ourselves &ndash;&gt;-->
 
 
-        <!-- http response headers -->
-        <div class="form-group">
-            <label>Http Response Headers</label>
-            <textarea name="responseHeaders" class="form-control" ng-model="stub.responseHeaders"/>
-        </div>
+        <!--&lt;!&ndash; URL PATH &ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label>Url Path</label>-->
+            <!--<input type="text" name="urlPath" class="form-control" ng-model="stub.urlPath">-->
+        <!--</div>-->
 
-        <!-- http method -->
-        <div class="form-group">
-            <label>Http Response</label>
-            <textarea  name="response" class="form-control" ng-model="stub.response"/>
-        </div>
+        <!--&lt;!&ndash; http method &ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label>Http Method</label>-->
+
+            <!--<select ng-options="item.label for item in items" ng-model="stub.httpMethod"></select>-->
+        <!--</div>-->
+
+
+        <!--&lt;!&ndash; http response headers &ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label>Http Response Headers</label>-->
+            <!--<textarea name="responseHeaders" class="form-control" ng-model="stub.responseHeaders"/>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; http method &ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label>Http Response</label>-->
+            <!--<textarea  name="response" class="form-control" ng-model="stub.response"/>-->
+        <!--</div>-->
 
 
 
-        <!-- SUBMIT BUTTON -->
-        <button type="submit" ng-click="save(stub)" class="btn btn-primary">Submit</button>
+        <!--&lt;!&ndash; SUBMIT BUTTON &ndash;&gt;-->
+        <!--<button type="submit" ng-click="save(stub)" class="btn btn-primary">Submit</button>-->
+
+    <!--</form>-->
+
+
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Legend</legend>
+            <div class="form-group">
+                <label for="urlPath" class="col-lg-2 control-label">URL PATH</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="urlPath" placeholder="URL absolute path for e.g. /hello" data-ng-model="stub.urlPath">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="httpMethod" class="col-lg-2 control-label">HTTP METHOD</label>
+                <div class="col-lg-10">
+                    <select ng-options="item.label for item in items" ng-model="stub.httpMethod" id="httpMethod" class="form-control" ></select>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="httpHeaderNames" class="col-lg-2 control-label">HTTP HEADERS</label>
+                <div class="clearfix"></div>
+                <div class="mini-group col-lg-offset-2" ng-repeat="rh in responseHeadersList">
+                <div class="col-lg-5">
+                    <input type="text" class="form-control typeahead" id="httpHeaderNames"
+                           sf-typeahead options="exampleOptions" datasets="responseHeadersDataset"
+                           ng-model="responseHeadersList[$index].headerName">
+                </div>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="httpHeaderValues"   ng-model="responseHeadersList[$index].headerValue">
+                </div>
+                    <div class="col-lg-2">
+                        <button class="remove"  ng-click="removeResponseHeader($index)"></button>
+                    </div>
+
+                </div>
+                <div class="col-lg-3 col-lg-push-2">
+                    <button class="addfields" ng-click="addResponseHeader()">Add fields</button>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="httpResponse" class="col-lg-2 control-label">HTTP RESPONSE</label>
+                <div class="col-lg-10">
+                    <textarea class="form-control" rows="3" id="httpResponse" ng-model="stub.response"></textarea>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button class="btn btn-default">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-ng-click="save(stub)">Save</button>
+                </div>
+            </div>
+            </fieldset>
+
 
     </form>
 

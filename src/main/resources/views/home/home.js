@@ -30,3 +30,5 @@ angular.module('stubberApp.homeview', ['ngRoute','ngResource'])
         }
 
     }]);
+
+
