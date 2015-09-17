@@ -10,68 +10,21 @@ angular.module('stubberApp.newview', ['ngRoute','ngResource','siyfion.sfTypeahea
             templateUrl: 'views/new/new.html',
             controller: 'NewStubCtrl'
         });
-    }])
-
-    .controller('NewStubCtrl', ['$resource','$scope',function($resource,$scope) {
-
-        $scope.stub = {};
-
-
-        //
-        // instantiate the bloodhound suggestion engine
-        var numbers = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: [
-                "Accept",
-                "Accept-Charset",
-                "Accept-Encoding",
-                "Accept-Language",
-                "Accept-Datetime",
-                "Authorization",
-                "Cache-Control",
-                "Connection",
-                "Cookie",
-                "Content-Length",
-                "Content-MD5",
-                "Content-Type",
-                "Date",
-                "Expect",
-                "From",
-                "Host",
-                "If-Match",
-                "If-Modified-Since",
-                "If-None-Match",
-                "If-Range",
-                "If-Unmodified-Since",
-                "Max-Forwards",
-                "Origin",
-                "Pragma",
-                "Proxy-Authorization",
-                "Range",
-                "Referer [sic]",
-                "TE",
-                "User-Agent",
-                "Upgrade",
-                "Via",
-                "Warning"
-            ]
+        $routeProvider.when('/edit/:id', {
+            templateUrl: 'views/new/new.html',
+            controller: 'NewStubCtrl'
         });
 
-        // initialize the bloodhound suggestion engine
-        numbers.initialize();
+    }])
 
-        $scope.responseHeadersDataset = {
+    .controller('NewStubCtrl', ['$resource','$scope','$routeParams', '$route',function($resource,$scope,$routeParams,$route) {
 
-            source: numbers.ttAdapter()
-        };
+        $scope.stub = {};
+        $scope.isEdit = false;
 
-        // Typeahead options object
-        $scope.exampleOptions = {
-            highlight: true
-        };
 
-        $scope.responseHeadersList =[{id:1}];
+
+        $scope.responseHeadersList =[];
 
         $scope.addResponseHeader = function() {
             var newItemNo = $scope.responseHeadersList.length+1;
@@ -79,18 +32,15 @@ angular.module('stubberApp.newview', ['ngRoute','ngResource','siyfion.sfTypeahea
         };
 
         $scope.removeResponseHeader = function(idx) {
-
-
-
-            $scope.responseHeadersList.splice(idx,1);
+         $scope.responseHeadersList.splice(idx,1);
         };
-
-
 
 
         //
 
-        var Stub = $resource('/donotuse/api/stub/:id');
+        var Stub = $resource('/donotuse/api/stub/:id',{id:'@id'},{
+            update: {method:'PUT'}
+        });
 
         $scope.items =[{name:"GET",label:"HTTP-GET"},
             {name:"POST",label:"HTTP-POST"},
@@ -99,35 +49,83 @@ angular.module('stubberApp.newview', ['ngRoute','ngResource','siyfion.sfTypeahea
         $scope.save = function(stubToBeSaved) {
 
 
-
             var stub = new Stub();
             stub.name = stubToBeSaved.name;
             stub.description = stubToBeSaved.description;
             stub.urlPath = stubToBeSaved.urlPath;
             stub.httpMethod = stubToBeSaved.httpMethod ? stubToBeSaved.httpMethod.name:'GET';
-            stubToBeSaved.responseHeaders='';
+            stubToBeSaved.headers='';
 
             for(var x =0; x < $scope.responseHeadersList.length; x++) {
                 var obj = $scope.responseHeadersList[x];
                 if (obj.headerName){
                     var pair = obj.headerName + ":" + obj.headerValue;
 
-                    stubToBeSaved.responseHeaders += pair + "||";
+                    stubToBeSaved.headers += pair + "||";
                 }
 
-
-
             }
-            if (stubToBeSaved.responseHeaders)
-                stubToBeSaved.responseHeaders = stubToBeSaved.responseHeaders.substring(0,stubToBeSaved.responseHeaders.length-2);
+            if (stubToBeSaved.headers)
+                stubToBeSaved.headers = stubToBeSaved.headers.substring(0,stubToBeSaved.headers.length-2);
 
-            if (stubToBeSaved.responseHeaders)
-                stub.responseHeaders = window.btoa(stubToBeSaved.responseHeaders);
+            if (stubToBeSaved.headers)
+                stub.headers = window.btoa(stubToBeSaved.headers);
 
             if (stubToBeSaved.response)
                 stub.response = window.btoa(stubToBeSaved.response);
 
-            stub.$save();
+            if ($scope.isEdit) {
+
+                stub.id = stubToBeSaved.id
+                stub.$update();
+
+            }
+            else
+            {
+                stub.$save();
+            }
+
+
+
+
+        }
+
+
+        if ($route.current.originalPath == "/edit/:id") {
+
+            $scope.isEdit = true;
+
+            Stub.get({id:$routeParams.id},function(stub){
+                $scope.stub = stub;
+
+                var headers = stub.headers, httpMethod = stub.httpMethod;
+                if (httpMethod) {
+
+                    for (var x=0; x <$scope.items.length; x++) {
+
+                        if ($scope.items[x].name == httpMethod) {
+                            $scope.stub.httpMethod = $scope.items[x];
+                            break;
+                        }
+
+                    }
+
+                }
+                if (headers) {
+                    var list = headers.split('||'),
+                        newlist = [];
+                    for (var x=0; x <list.length; x++) {
+                        var _namevalue = list[x].split(':');
+
+                        newlist.push({id:x+1,headerName: _namevalue[0],headerValue: _namevalue[1]});
+
+                    }
+                    $scope.responseHeadersList = newlist;
+                }
+
+            });
+
+
 
 
         }

@@ -34,12 +34,11 @@ public class StubDao {
         int row = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(JdbcQueries.addStub,
                     new String[] {"ID"});
-            ps.setString(1,stub.getName());
-            ps.setString(2,stub.getDescription());
-            ps.setString(3,stub.getUrlPath());
-            ps.setString(4,stub.getHttpMethod());
-            ps.setString(5,stub.getResponseHeaders());
-            ps.setString(6,stub.getResponse());
+
+            ps.setString(1,stub.getUrlPath());
+            ps.setString(2,stub.getHttpMethod());
+            ps.setString(3,stub.getHeaders());
+            ps.setString(4,stub.getResponse());
             return ps;
         },holder);
 
@@ -57,22 +56,31 @@ public class StubDao {
 
     }
 
+    public StubInstance updateStub(StubInstance stub) {
+
+
+        Object[] params ={stub.getUrlPath(),stub.getHttpMethod(),stub.getHeaders(),stub.getResponse(),stub.getId()};
+        int row =  jdbcTemplate.update(JdbcQueries.updateStub,params);
+
+        return stub;
+
+
+    }
+
 
     public List<StubInstance> search(String httpMethod, String urlPath) {
 
 
 
-            List<StubInstance> results =     jdbcTemplate.query(JdbcQueries.searcStub, new Object[]{httpMethod, urlPath}, new RowMapper<StubInstance>() {
+            List<StubInstance> results =     jdbcTemplate.query(JdbcQueries.searchStub, new Object[]{httpMethod, urlPath}, new RowMapper<StubInstance>() {
                 @Override
                 public StubInstance mapRow(ResultSet resultSet, int i) throws SQLException {
                     StubInstance stubInstance = new StubInstance();
                     stubInstance.setId(resultSet.getLong(1));
-                    stubInstance.setName(resultSet.getString(2));
-                    stubInstance.setDescription(resultSet.getString(3));
-                    stubInstance.setUrlPath(resultSet.getString(4));
-                    stubInstance.setHttpMethod(resultSet.getString(5));
-                    stubInstance.setResponseHeaders(resultSet.getString(6));
-                    stubInstance.setResponse(resultSet.getString(7));
+                    stubInstance.setUrlPath(resultSet.getString(2));
+                    stubInstance.setHttpMethod(resultSet.getString(3));
+                    stubInstance.setHeaders(resultSet.getString(4));
+                    stubInstance.setResponse(resultSet.getString(5));
                     return stubInstance;
 
                 }
@@ -96,4 +104,10 @@ public class StubDao {
 
     }
 
+    public StubInstance getStub(Long id) {
+
+        StubInstance stubInstance = (StubInstance) jdbcTemplate.queryForObject(JdbcQueries.getStub, new Object[]{id}, new BeanPropertyRowMapper(StubInstance.class));
+
+        return stubInstance;
+    }
 }

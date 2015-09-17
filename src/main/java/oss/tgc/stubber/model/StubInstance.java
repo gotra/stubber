@@ -9,11 +9,12 @@ public class StubInstance {
 
 
     Long id;
-    String name;
-    String description;
     String urlPath;
+    boolean isActive;
+    boolean isSite;
+    String directoryPath;
     String httpMethod;
-    String responseHeaders;
+    String headers;
     String response;
 
     public StubInstance() {
@@ -25,22 +26,6 @@ public class StubInstance {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getUrlPath() {
@@ -67,38 +52,46 @@ public class StubInstance {
         this.response = response;
     }
 
+    public String getHeaders() {
+        return headers;
+    }
 
-    public StubInstance(Long id, String name, String description, String urlPath, String httpMethod, String responseHeaders, String response) {
+    public void setHeaders(String headers) {
+        this.headers = headers;
+    }
+
+    public StubInstance(Long id, String urlPath, boolean isActive, boolean isSite, String directoryPath, String httpMethod, String headers, String response) {
         this.id = id;
-        this.name = name;
-        this.description = description;
         this.urlPath = urlPath;
+        this.isActive = isActive;
+        this.isSite = isSite;
+        this.directoryPath = directoryPath;
         this.httpMethod = httpMethod;
-        this.responseHeaders = responseHeaders;
+        this.headers = headers;
         this.response = response;
     }
 
-
-    public String getResponseHeaders() {
-        return responseHeaders;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setResponseHeaders(String responseHeaders) {
-        this.responseHeaders = responseHeaders;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
-    @Override
-    public String toString() {
-        return "StubInstance{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", urlPath='" + urlPath + '\'' +
-                ", httpMethod='" + httpMethod + '\'' +
-                ", responseHeaders='" + responseHeaders + '\'' +
-                ", response='" + response + '\'' +
-                '}';
+    public boolean isSite() {
+        return isSite;
     }
 
+    public void setIsSite(boolean isSite) {
+        this.isSite = isSite;
+    }
 
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
+    }
 }

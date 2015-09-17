@@ -5,33 +5,16 @@ package oss.tgc.stubber.controller;
  */
 
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import oss.tgc.stubber.dao.JdbcQueries;
 import oss.tgc.stubber.dao.StubDao;
 import oss.tgc.stubber.model.StubInstance;
 
-import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 @Component
 @Path("/api")
@@ -50,20 +33,31 @@ public class MainController {
 
         Base64.Decoder decoder = Base64.getDecoder();
         String response = stub.getResponse()!=null ? stub.getResponse():"";
-        String responseHeader = stub.getResponseHeaders() !=null ? stub.getResponseHeaders():"";
+        String responseHeader = stub.getHeaders() !=null ? stub.getHeaders():"";
         //if (response!=null && response.trim().length() > 0)
         stub.setResponse(new String(decoder.decode(response.getBytes())));
 
         //if (responseHeader !=null && responseHeader.trim().length()>0)
-        stub.setResponseHeaders(new String(decoder.decode(responseHeader.getBytes())));
+        stub.setHeaders(new String(decoder.decode(responseHeader.getBytes())));
         stub = stubDao.createStub(stub);
         return Response.ok().type(MediaType.APPLICATION_JSON).entity(stub).build();
     }
 
-    @POST
-    @Path("stubv2")
-    public Response addStubTest(JSONObject stub) {
+    @PUT
+    @Path("stub/{id}")
+    public Response updateStub(StubInstance stub) {
 
+
+
+        Base64.Decoder decoder = Base64.getDecoder();
+        String response = stub.getResponse()!=null ? stub.getResponse():"";
+        String responseHeader = stub.getHeaders() !=null ? stub.getHeaders():"";
+        //if (response!=null && response.trim().length() > 0)
+        stub.setResponse(new String(decoder.decode(response.getBytes())));
+
+        //if (responseHeader !=null && responseHeader.trim().length()>0)
+        stub.setHeaders(new String(decoder.decode(responseHeader.getBytes())));
+        stub = stubDao.updateStub(stub);
         return Response.ok().type(MediaType.APPLICATION_JSON).entity(stub).build();
     }
 
@@ -82,6 +76,17 @@ public class MainController {
 
         int rows = stubDao.deleteStub(id);
         return Response.ok().type(MediaType.APPLICATION_JSON).entity("{\"rows\": " + rows + " }").build();
+
+
+    }
+
+
+    @GET
+    @Path("stub/{id}")
+    public Response getStub(@PathParam("id") Long id) {
+
+        StubInstance stub = stubDao.getStub(id);
+        return Response.ok().type(MediaType.APPLICATION_JSON).entity(stub).build();
 
 
     }

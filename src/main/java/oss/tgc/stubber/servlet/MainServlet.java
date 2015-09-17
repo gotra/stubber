@@ -1,10 +1,7 @@
 package oss.tgc.stubber.servlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import oss.tgc.stubber.dao.StubDao;
 import oss.tgc.stubber.model.Constants;
 import oss.tgc.stubber.model.StubInstance;
@@ -40,7 +37,7 @@ public class MainServlet extends HttpServlet {
 
              if (stubs != null && stubs.size() > 0) {
                  response.getWriter().print(stubs.get(0).getResponse());
-                 String responeHeaders = stubs.get(0).getResponseHeaders();
+                 String responeHeaders = stubs.get(0).getHeaders();
                  if (responeHeaders!=null && responeHeaders.trim().length()>0){
 
                      String[] responeHeadersList = responeHeaders.split(Constants.SEPERATOR);

@@ -1,40 +1,5 @@
 <div class="container">
 
-    <!--<form name="userForm"  novalidate> &lt;!&ndash; novalidate prevents HTML5 validation since we will be validating ourselves &ndash;&gt;-->
-
-
-        <!--&lt;!&ndash; URL PATH &ndash;&gt;-->
-        <!--<div class="form-group">-->
-            <!--<label>Url Path</label>-->
-            <!--<input type="text" name="urlPath" class="form-control" ng-model="stub.urlPath">-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; http method &ndash;&gt;-->
-        <!--<div class="form-group">-->
-            <!--<label>Http Method</label>-->
-
-            <!--<select ng-options="item.label for item in items" ng-model="stub.httpMethod"></select>-->
-        <!--</div>-->
-
-
-        <!--&lt;!&ndash; http response headers &ndash;&gt;-->
-        <!--<div class="form-group">-->
-            <!--<label>Http Response Headers</label>-->
-            <!--<textarea name="responseHeaders" class="form-control" ng-model="stub.responseHeaders"/>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash; http method &ndash;&gt;-->
-        <!--<div class="form-group">-->
-            <!--<label>Http Response</label>-->
-            <!--<textarea  name="response" class="form-control" ng-model="stub.response"/>-->
-        <!--</div>-->
-
-
-
-        <!--&lt;!&ndash; SUBMIT BUTTON &ndash;&gt;-->
-        <!--<button type="submit" ng-click="save(stub)" class="btn btn-primary">Submit</button>-->
-
-    <!--</form>-->
 
 
     <form class="form-horizontal">
@@ -61,9 +26,10 @@
                 <div class="clearfix"></div>
                 <div class="mini-group col-lg-offset-2" ng-repeat="rh in responseHeadersList">
                 <div class="col-lg-5">
-                    <input type="text" class="form-control typeahead" id="httpHeaderNames"
-                           sf-typeahead options="exampleOptions" datasets="responseHeadersDataset"
-                           ng-model="responseHeadersList[$index].headerName">
+                    <input type="text" class="form-control" id="httpHeaderNames"
+
+                           ng-model="responseHeadersList[$index].headerName"
+                           >
                 </div>
                 <div class="col-lg-3">
                     <input type="text" class="form-control" id="httpHeaderValues"   ng-model="responseHeadersList[$index].headerValue">
@@ -89,7 +55,7 @@
 
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <button class="btn btn-default">Cancel</button>
+                    <a class="btn btn-default" href="#/home">Cancel</a>
                     <button type="submit" class="btn btn-primary" data-ng-click="save(stub)">Save</button>
                 </div>
             </div>
