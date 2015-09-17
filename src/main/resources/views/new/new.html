@@ -35,7 +35,9 @@
                     <input type="text" class="form-control" id="httpHeaderValues"   ng-model="responseHeadersList[$index].headerValue">
                 </div>
                     <div class="col-lg-2">
-                        <button class="remove"  ng-click="removeResponseHeader($index)"></button>
+                        <button class="remove"  ng-click="removeResponseHeader($index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
                     </div>
 
                 </div>
@@ -55,8 +57,9 @@
 
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <a class="btn btn-default" href="#/home">Cancel</a>
-                    <button type="submit" class="btn btn-primary" data-ng-click="save(stub)">Save</button>
+                    <a class="btn btn-default" href="#/home"><i class="mdi-navigation-close"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary" data-ng-click="save(stub)"><i class="mdi-navigation-check">
+                        </i>Save</button>
                 </div>
             </div>
             </fieldset>

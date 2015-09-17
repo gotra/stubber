@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('stubberApp.newview', ['ngRoute','ngResource','siyfion.sfTypeahead'])
+angular.module('stubberApp.newview', ['ngRoute','ngResource'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/new', {
