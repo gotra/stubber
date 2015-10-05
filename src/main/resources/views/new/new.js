@@ -17,7 +17,8 @@ angular.module('stubberApp.newview', ['ngRoute','ngResource'])
 
     }])
 
-    .controller('NewStubCtrl', ['$resource','$scope','$routeParams', '$route',function($resource,$scope,$routeParams,$route) {
+    .controller('NewStubCtrl', ['$resource','$scope','$routeParams', '$route', '$location',
+        function($resource,$scope,$routeParams,$route,$location) {
 
         $scope.stub = {};
         $scope.isEdit = false;
@@ -77,12 +78,16 @@ angular.module('stubberApp.newview', ['ngRoute','ngResource'])
             if ($scope.isEdit) {
 
                 stub.id = stubToBeSaved.id
-                stub.$update();
+                stub.$update(function(val,responseHeaders){
+                    $location.path('/');
+                });
 
             }
             else
             {
-                stub.$save();
+                stub.$save(function(val,responseHeaders){
+                    $location.path('/');
+                });
             }
 
 

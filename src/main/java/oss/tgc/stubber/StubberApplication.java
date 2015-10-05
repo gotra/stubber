@@ -8,12 +8,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import oss.tgc.stubber.filters.SimpleCORSFilter;
 import oss.tgc.stubber.model.StubInstance;
 import oss.tgc.stubber.servlet.MainServlet;
 import oss.tgc.stubber.servlet.ResourceServlet;
@@ -40,6 +42,13 @@ public class StubberApplication extends SpringBootServletInitializer implements 
     @Bean
     public ServletRegistrationBean servlet2(){
         return new ServletRegistrationBean(new ResourceServlet(),"/static/*");
+    }
+
+    @Bean
+    public FilterRegistrationBean filterCORS() {
+        FilterRegistrationBean newFilter = new FilterRegistrationBean(new SimpleCORSFilter());
+        newFilter.addUrlPatterns("/*");
+        return newFilter;
     }
 
 
