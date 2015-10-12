@@ -31,6 +31,11 @@ public class MainServlet extends HttpServlet {
 
          try {
 
+             if (request.getMethod().equalsIgnoreCase("options")) {
+                 response.setStatus(200);
+                 return;
+             }
+
 
 
              List<StubInstance> stubs = stubDao.search(request.getMethod(), request.getPathInfo());
